@@ -94,7 +94,7 @@ ViewModelExplorer({
     >
     <div b="style: panelStyle, hover: hoveringIcon">
       <div style="text-align: left">
-        <img src="https://viewmodel.org/paper-plane.png"
+        <img src="https://viewmodel.org/viewmodel-logo-small.png"
              style="
              max-height: 15px;
              margin-top: 2px;
