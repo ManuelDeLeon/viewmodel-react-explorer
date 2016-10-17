@@ -4,14 +4,14 @@
   "description": "Debuggin tool for viewmodel-react",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juliancwirko/react-npm-boilerplate.git"
+    "url": "https://github.com/ManuelDeLeon/viewmodel-react-explorer.git"
   },
-  "author": "Julian Ćwirko",
+  "author": "Manuel De Leon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/juliancwirko/react-npm-boilerplate/issues"
+    "url": "https://github.com/ManuelDeLeon/viewmodel-react-explorer/issues"
   },
-  "homepage": "https://github.com/juliancwirko/react-npm-boilerplate",
+  "homepage": "https://github.com/ManuelDeLeon/viewmodel-react-explorer",
   "keywords": [
     "viewmodel",
     "viewmodel-explorer",
