@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Property = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _viewmodelReact = require('viewmodel-react');
@@ -56,7 +54,7 @@ var Property = exports.Property = function (_React$Component) {
             ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}'),
             'data-bind': '{value:value}'
           }) : null,
-          _viewmodelReact2.default.getValue(this, null, null, 'type === \'boolean\'') ? _react2.default.createElement('input', { type: 'checkbox', defaultChecked: _viewmodelReact2.default.getValue(this, null, null, 'value'),
+          _viewmodelReact2.default.getValue(this, null, null, 'isBoolean') ? _react2.default.createElement('input', { type: 'checkbox', defaultChecked: _viewmodelReact2.default.getValue(this, null, null, 'value'),
             ref: _viewmodelReact2.default.bindElement(this, null, null, '{check:value}'),
             'data-bind': '{check:value}'
           }) : null,
@@ -122,16 +120,16 @@ var Property = exports.Property = function (_React$Component) {
         };
       },
       type: function type() {
-        return _typeof(this.value());
+        return this.value.property && this.value.property.valueType;
       },
       isBoolean: function isBoolean() {
-        return !this.isFunc() && this.type() === 'boolean';
+        return !this.isFunc() && this.type() === 4;
       },
       isObject: function isObject() {
-        return !this.isFunc() && this.type() === 'object' && this.value() !== null && !(this.value() instanceof Array);
+        return !this.isFunc() && this.type() === 5;
       },
       isArray: function isArray() {
-        return !this.isFunc() && this.type() === 'object' && this.value() instanceof Array;
+        return !this.isFunc() && this.type() === 7;
       },
       isOther: function isOther() {
         return !this.isFunc() && !(this.isBoolean() || this.isObject() || this.isArray());

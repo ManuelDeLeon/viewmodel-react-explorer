@@ -92,7 +92,7 @@ ViewModelExplorer({
     }
     return ViewModel.rootComponents.list();
   },
-  selectedState: '',
+  selectedState: null,
   savedStates: [],
   addComponentForSave(allComponents, component){
     if (component.vmComponentName === "ViewModelExplorer") return;
@@ -151,7 +151,7 @@ ViewModelExplorer({
     if (!selectedState) return;
     const response = confirm(`Do you want to delete state '${selectedState}'`);
     if (!response) return;
-
+    store.remove(selectedState);
     let index = -1;
     for(let state of this.savedStates()) {
       index++;
@@ -160,7 +160,7 @@ ViewModelExplorer({
         break;
       }
     }
-    this.selectedState('');
+    this.selectedState(null);
   },
   selectedStateStyle() {
     return {

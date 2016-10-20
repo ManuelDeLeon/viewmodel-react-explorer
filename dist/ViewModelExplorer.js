@@ -166,7 +166,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
 
       hoveringIcon: false,
 
-      selectedState: '',
+      selectedState: null,
       savedStates: [],
       created: function created() {
         var _this3 = this;
@@ -407,7 +407,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
         if (!selectedState) return;
         var response = confirm('Do you want to delete state \'' + selectedState + '\'');
         if (!response) return;
-
+        _store2.default.remove(selectedState);
         var index = -1;
         var _iteratorNormalCompletion6 = true;
         var _didIteratorError6 = false;
@@ -438,7 +438,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
           }
         }
 
-        this.selectedState('');
+        this.selectedState(null);
       },
       selectedStateStyle: function selectedStateStyle() {
         return {
