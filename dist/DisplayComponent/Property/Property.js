@@ -50,7 +50,8 @@ var Property = exports.Property = function (_React$Component) {
             } },
           _viewmodelReact2.default.getValue(this, null, null, 'isOther') ? _react2.default.createElement('textarea', { rows: '1', disabled: this.isVmProp(), style: {
               fontFamily: 'Arial',
-              unknown: 'sans-serif'
+              unknown: 'sans-serif',
+              borderRadius: '4px'
             }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'value'),
             ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}'),
             'data-bind': '{value:value}'
@@ -61,14 +62,16 @@ var Property = exports.Property = function (_React$Component) {
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isObject') ? _react2.default.createElement('textarea', { rows: '4', disabled: this.isVmProp(), style: {
               fontFamily: 'Arial',
-              unknown: 'sans-serif'
+              unknown: 'sans-serif',
+              borderRadius: '4px'
             }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'objectValue'),
             ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:objectValue}'),
             'data-bind': '{value:objectValue}'
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isArray') ? _react2.default.createElement('textarea', { disabled: 'disabled', style: {
               fontFamily: 'Arial',
-              unknown: 'sans-serif'
+              unknown: 'sans-serif',
+              borderRadius: '4px'
             }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'arrayValue'),
             ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:arrayValue}'),
             'data-bind': '{value:arrayValue}'
@@ -86,7 +89,8 @@ var Property = exports.Property = function (_React$Component) {
           ) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'showFuncResult') ? _react2.default.createElement('textarea', { disabled: 'disabled', rows: '1', style: {
               fontFamily: 'Arial',
-              unknown: 'sans-serif'
+              unknown: 'sans-serif',
+              borderRadius: '4px'
             }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'value'),
             ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}'),
             'data-bind': '{value:value}'

@@ -36,14 +36,14 @@ Property({
     <tr>
       <td b="text: name, style: nameStyle"></td>
       <td style="padding-left: 5px">
-        <textarea rows="1" b="if: isOther, value: value" disabled={this.isVmProp()} style="font-family: Arial, Helvetica, sans-serif;" />
+        <textarea rows="1" b="if: isOther, value: value" disabled={this.isVmProp()} style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;" />
         <input type="checkbox" b="if: type === 'boolean', check: value" />
-        <textarea rows="4" b="if: isObject, value: objectValue" disabled={this.isVmProp()} style="font-family: Arial, Helvetica, sans-serif;"/>
-        <textarea disabled="disabled" b="if: isArray, value: arrayValue" style="font-family: Arial, Helvetica, sans-serif;"/>
+        <textarea rows="4" b="if: isObject, value: objectValue" disabled={this.isVmProp()} style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
+        <textarea disabled="disabled" b="if: isArray, value: arrayValue" style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
         <a b="if: isFunc && !isVmProp && !showFuncResult, click: showFuncResult(true)"
            style="cursor: pointer"
         >evaluate</a>
-        <textarea disabled="disabled" rows="1" b="if: showFuncResult, value: value" style="font-family: Arial, Helvetica, sans-serif;"/>
+        <textarea disabled="disabled" rows="1" b="if: showFuncResult, value: value" style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
       </td>
     </tr>
   }
