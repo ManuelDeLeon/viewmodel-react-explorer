@@ -47,6 +47,7 @@ var Property = exports.Property = function (_React$Component) {
               paddingLeft: '5px'
             } },
           _viewmodelReact2.default.getValue(this, null, null, 'isOther') ? _react2.default.createElement('textarea', { rows: '1', disabled: this.isVmProp(), style: {
+              fontSize: '12px',
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
@@ -59,6 +60,7 @@ var Property = exports.Property = function (_React$Component) {
             'data-bind': '{check:value}'
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isObject') ? _react2.default.createElement('textarea', { rows: '4', disabled: this.isVmProp(), style: {
+              fontSize: '12px',
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
@@ -67,6 +69,7 @@ var Property = exports.Property = function (_React$Component) {
             'data-bind': '{value:objectValue}'
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isArray') ? _react2.default.createElement('textarea', { disabled: 'disabled', style: {
+              fontSize: '12px',
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
@@ -78,6 +81,7 @@ var Property = exports.Property = function (_React$Component) {
             'a',
             {
               style: {
+                fontSize: '12px',
                 cursor: 'pointer'
               },
               ref: _viewmodelReact2.default.bindElement(this, null, null, '{click:showFuncResult(true)}'),
@@ -86,6 +90,7 @@ var Property = exports.Property = function (_React$Component) {
             'evaluate'
           ) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'showFuncResult') ? _react2.default.createElement('textarea', { disabled: 'disabled', rows: '1', style: {
+              fontSize: '12px',
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
@@ -116,7 +121,8 @@ var Property = exports.Property = function (_React$Component) {
       }),
       nameStyle: function nameStyle() {
         return {
-          color: this.isFunc() || this.value.valid() ? undefined : 'darkred'
+          color: this.isFunc() || this.value.valid() ? undefined : 'darkred',
+          'font-size': '12px'
         };
       },
       type: function type() {

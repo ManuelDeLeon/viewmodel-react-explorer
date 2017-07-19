@@ -39,7 +39,8 @@ DisplayComponent({
     return {
       color: this.viewmodel() && this.viewmodel().valid() ? 'darkblue' : 'darkred',
       'font-weight': hasChildren ? 'bold' : 'normal',
-      cursor: hasChildren ? 'pointer' : 'default'
+      cursor: hasChildren ? 'pointer' : 'default',
+      'font-size': '12px'
     };
   },
   render(){

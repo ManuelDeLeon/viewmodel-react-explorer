@@ -2,7 +2,8 @@ Property({
   name: '',
   nameStyle() {
     return {
-      color: this.isFunc() || this.value.valid() ? undefined : 'darkred'
+      color: this.isFunc() || this.value.valid() ? undefined : 'darkred',
+      'font-size': '12px'
     }
   },
   value: undefined,
@@ -36,14 +37,14 @@ Property({
     <tr>
       <td b="text: name, style: nameStyle" />
       <td style="padding-left: 5px">
-        <textarea rows="1" b="if: isOther, value: value" disabled={this.isVmProp()} style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;" />
+        <textarea rows="1" b="if: isOther, value: value" disabled={this.isVmProp()} style="font-size: 12px, font-family: Arial, Helvetica, sans-serif; border-radius: 4px;" />
         <input type="checkbox" b="if: isBoolean, check: value" />
-        <textarea rows="4" b="if: isObject, value: objectValue" disabled={this.isVmProp()} style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
-        <textarea disabled="disabled" b="if: isArray, value: arrayValue" style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
+        <textarea rows="4" b="if: isObject, value: objectValue" disabled={this.isVmProp()} style="font-size: 12px, font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
+        <textarea disabled="disabled" b="if: isArray, value: arrayValue" style="font-size: 12px, font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
         <a b="if: isFunc && !isVmProp && !showFuncResult, click: showFuncResult(true)"
-           style="cursor: pointer"
+           style="font-size: 12px, cursor: pointer"
         >evaluate</a>
-        <textarea disabled="disabled" rows="1" b="if: showFuncResult, value: value" style="font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
+        <textarea disabled="disabled" rows="1" b="if: showFuncResult, value: value" style="font-size: 12px, font-family: Arial, Helvetica, sans-serif; border-radius: 4px;"/>
       </td>
     </tr>
   }

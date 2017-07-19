@@ -4,7 +4,7 @@ import store from './store';
 ViewModel.signal({
   window: {
     windowSize: {
-      target: window,
+      target: (typeof window != 'undefined' ? window : global),
       event: 'resize',
       transform: function(event) {
         return {

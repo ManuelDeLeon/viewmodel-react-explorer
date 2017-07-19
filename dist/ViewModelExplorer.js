@@ -34,7 +34,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 _viewmodelReact2.default.signal({
   window: {
     windowSize: {
-      target: window,
+      target: typeof window != 'undefined' ? window : global,
       event: 'resize',
       transform: function transform(event) {
         return {
