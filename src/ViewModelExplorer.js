@@ -1,29 +1,48 @@
-import store from './store';
-//var store = new Store('ViewModelExplorer');
+import store from "./store";
 
-ViewModel.signal({
-  window: {
-    windowSize: {
-      target: (typeof window != 'undefined' ? window : global),
-      event: 'resize',
-      transform: function(event) {
-        return {
-          height: window.innerHeight,
-          width: window.innerWidth
+const initialWindowSize = {
+  height: 0,
+  width: 10000
+};
+if (typeof window != "undefined") {
+  let first = true;
+  ViewModel.signal({
+    window: {
+      windowSize: {
+        target: window,
+        event: "resize",
+        transform: function(event) {
+          if (first) {
+            first = false;
+            return initialWindowSize;
+          }
+          return {
+            height: window.innerHeight,
+            width: window.innerWidth
+          };
         }
       }
     }
-  }
-});
+  });
+}
 
 let scrollWidth;
-
+let firstScroll = true;
 ViewModelExplorer({
-  signal: 'window',
+  signal: "window",
+  windowSize: initialWindowSize,
   created() {
-    store.forEach((key, val) => {
-      this.savedStates().push({ name: key, components: val });
-    })
+    if (typeof window != "undefined") {
+      setTimeout(() => {
+        this.windowSize({
+          height: window.innerHeight,
+          width: window.innerWidth
+        });
+        store.forEach((key, val) => {
+          this.savedStates().push({ name: key, components: val });
+        });
+      });
+    }
   },
   topMargin: 45,
   bottomMargin: 45,
@@ -31,33 +50,47 @@ ViewModelExplorer({
   panelHeight() {
     return this.windowSize().height - this.topMargin() - this.bottomMargin();
   },
-  panelWidth: 330,
-  collapsedLeft(){
+  panelWidth: 340,
+  collapsedLeft() {
     return this.hoveringIcon() ? 40 : 35;
   },
   panelStyle() {
     return {
-      position: 'fixed',
+      position: "fixed",
       height: this.show() ? this.panelHeight() : 25,
       width: this.panelWidth(),
-      'top': this.topMargin(),
-      'z-index': 99999,
-      'background-color': '#ccc',
-      border: '1px solid #555',
-      'left': this.windowSize().width - (this.show() ? this.panelWidth() : this.collapsedLeft()) - this.scrollbarWidth(),
-      'overflow-x': 'auto',
-      'overflow-y': 'visible',
-      'border-radius': '1em 0 0 1em',
-      'WebkitTransition': 'all 0.5s ease-in-out',
-      'MozTransition': 'all 0.5s ease-in-out',
-      '-ms-transition': 'all 0.5s ease-in-out',
-      'OTransition': 'all 0.5s ease-in-out',
+      top: this.topMargin(),
+      "z-index": 99999,
+      "background-color": "#ccc",
+      border: "1px solid #555",
+      left:
+        this.windowSize().width -
+        (this.show() ? this.panelWidth() : this.collapsedLeft()) -
+        this.scrollbarWidth(),
+      "overflow-x": "auto",
+      "overflow-y": "visible",
+      "border-radius": "1em 0 0 1em",
+      WebkitTransition: "all 0.5s ease-in-out",
+      MozTransition: "all 0.5s ease-in-out",
+      "-ms-transition": "all 0.5s ease-in-out",
+      OTransition: "all 0.5s ease-in-out",
       opacity: this.show() || this.hoveringIcon() ? 1 : 0.4
-    }
+    };
   },
   scrollbarWidth() {
-    var body = document.body, html = document.documentElement;
-    var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+    if (firstScroll) {
+      firstScroll = false;
+      return 0;
+    }
+    var body = document.body,
+      html = document.documentElement;
+    var height = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
     if (height <= window.innerHeight) return 0;
     if (scrollWidth) return scrollWidth;
 
@@ -86,7 +119,7 @@ ViewModelExplorer({
     return scrollWidth;
   },
   hoveringIcon: false,
-  components(){
+  components() {
     if (!ViewModel.rootComponents) {
       ViewModel.prepareRoot();
     }
@@ -94,66 +127,64 @@ ViewModelExplorer({
   },
   selectedState: null,
   savedStates: [],
-  addComponentForSave(allComponents, component){
+  addComponentForSave(allComponents, component) {
     if (component.vmComponentName === "ViewModelExplorer") return;
     const data = component.data();
-    if (Object.keys(data).length > 0){
-      allComponents[ViewModel.getComponentPath(component)] = data;
+    if (Object.keys(data).length > 0) {
+      allComponents[ViewModel.getPathToRoot(component)] = data;
     }
-    for(let child of component.children()) {
+    for (let child of component.children()) {
       this.addComponentForSave(allComponents, child);
     }
   },
   saveState() {
     const name = prompt("Name of the current state:");
     const allComponents = {};
-    for(let component of this.components()) {
+    for (let component of this.components()) {
       this.addComponentForSave(allComponents, component);
     }
     this.savedStates().push({ name: name, components: allComponents });
     store.set(name, allComponents);
     this.selectedState(name);
   },
-  loadComponentState(components, component){
+  loadComponentState(components, component) {
     if (component.vmComponentName === "ViewModelExplorer") return;
 
     ViewModel.Tracker.afterFlush(() => {
-      const data = components[ViewModel.getComponentPath(component)];
+      const data = components[ViewModel.getPathToRoot(component)];
       if (data) {
         component.load(data);
       }
 
-      for(let child of component.children()) {
+      for (let child of component.children()) {
         this.loadComponentState(components, child);
       }
-    })
-
-
+    });
   },
-  loadState(){
+  loadState() {
     const selectedState = this.selectedState();
     if (!selectedState) return;
     const that = this;
-    for(let state of this.savedStates()) {
+    for (let state of this.savedStates()) {
       if (state.name === selectedState) {
         ViewModel.Tracker.nonreactive(function() {
-          for(let component of that.components()) {
+          for (let component of that.components()) {
             that.loadComponentState(state.components, component);
           }
-        })
+        });
 
         break;
       }
     }
   },
-  deleteState(){
+  deleteState() {
     const selectedState = this.selectedState();
     if (!selectedState) return;
     const response = confirm(`Do you want to delete state '${selectedState}'`);
     if (!response) return;
     store.remove(selectedState);
     let index = -1;
-    for(let state of this.savedStates()) {
+    for (let state of this.savedStates()) {
       index++;
       if (state.name === selectedState) {
         this.savedStates().splice(index, 1);
@@ -165,37 +196,41 @@ ViewModelExplorer({
   selectedStateStyle() {
     return {
       width: 130 - this.scrollbarWidth(),
-      backgroundImage: 'url(https://viewmodel.blob.core.windows.net/explorer/dropdown_arrow.png)'
-    }
+      backgroundImage:
+        "url(https://viewmodel.blob.core.windows.net/explorer/dropdown_arrow.png)"
+    };
   },
-  render(){
-    <div 
-      style="
+  render() {
+    <div style="
       font-family: Arial, Helvetica, sans-serif;
       font-size: 12px;
       line-height: 16px;
-      "
-    >
-    <div b="style: panelStyle, hover: hoveringIcon">
-      <div style="text-align: left">
-        <img src="https://viewmodel.blob.core.windows.net/explorer/viewmodel-logo-small.png"
-             style="
+      ">
+      <div b="style: panelStyle, hover: hoveringIcon">
+        <div style="text-align: left">
+          <img
+            src="https://viewmodel.blob.core.windows.net/explorer/viewmodel-logo-small.png"
+            style="
              max-height: 15px;
              margin-top: 3px;
              margin-left: 2px;
              cursor: pointer;
              vertical-align: top;
              "
-             b="toggle: show"
-        />
-        <span style="font-size: 14px; margin-left: 10px; font-weight: bold; position: relative; top: -4px;">View Models</span>
-        <img src="https://viewmodel.blob.core.windows.net/explorer/add.png"
-             style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
-             title="Save current state"
-             b="click: saveState"
-        />
-        <select b="value: selectedState, style: selectedStateStyle, change: loadState"
-                style="
+            b="toggle: show"
+          />
+          <span style="font-size: 14px; margin-left: 10px; font-weight: bold; position: relative; top: -4px;">
+            View Models
+          </span>
+          <img
+            src="https://viewmodel.blob.core.windows.net/explorer/add.png"
+            style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
+            title="Save current state"
+            b="click: saveState"
+          />
+          <select
+            b="value: selectedState, style: selectedStateStyle, change: loadState"
+            style="
                    -webkit-appearance: button;
                    -webkit-padding-end: 20px;
                    -webkit-padding-start: 2px;
@@ -215,22 +250,26 @@ ViewModelExplorer({
                    margin-top: 4px;
                    vertical-align: top;
                 "
-        >
-          <option b="repeat: savedStates, key: name" value={repeatObject.name}>{repeatObject.name}</option>
-        </select>
-        <img src="https://viewmodel.blob.core.windows.net/explorer/remove.png"
-             style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
-             title="Delete selected state"
-             b="click: deleteState"
-        />
+          >
+            <option
+              b="repeat: savedStates, key: name"
+              value={repeatObject.name}
+            >
+              {repeatObject.name}
+            </option>
+          </select>
+          <img
+            src="https://viewmodel.blob.core.windows.net/explorer/remove.png"
+            style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
+            title="Delete selected state"
+            b="click: deleteState"
+          />
+        </div>
+
+        {this.components().map(c => (
+          <DisplayComponent key={c.vmId} viewmodel={c} />
+        ))}
       </div>
-
-      {
-        this.components().map((c) => <DisplayComponent key={c.vmId} viewmodel={ c }/>)
-      }
-
-
-    </div>
-      </div>
-      }
+    </div>;
+  }
 });

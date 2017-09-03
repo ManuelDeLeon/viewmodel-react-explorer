@@ -23,6 +23,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var VmLazyL;
+
 var Property = exports.Property = function (_React$Component) {
   _inherits(Property, _React$Component);
 
@@ -35,9 +37,9 @@ var Property = exports.Property = function (_React$Component) {
         _react2.default.createElement(
           'td',
           {
+            'data-bind': 'text: name, style: nameStyle',
             style: _viewmodelReact2.default.getStyle(this, null, null, '', 'nameStyle'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, 'text: name, style: nameStyle'),
-            'data-bind': 'text: name, style: nameStyle'
+            ref: _viewmodelReact2.default.bindElement(this, null, null, 'text: name, style: nameStyle')
           },
           _viewmodelReact2.default.getValue(this, null, null, 'name')
         ),
@@ -51,31 +53,31 @@ var Property = exports.Property = function (_React$Component) {
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
-            }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'value'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}'),
-            'data-bind': '{value:value}'
+            }, 'data-bind': 'if: isOther, value: value',
+            defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'value'),
+            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}')
           }) : null,
-          _viewmodelReact2.default.getValue(this, null, null, 'isBoolean') ? _react2.default.createElement('input', { type: 'checkbox', defaultChecked: _viewmodelReact2.default.getValue(this, null, null, 'value'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, '{check:value}'),
-            'data-bind': '{check:value}'
+          _viewmodelReact2.default.getValue(this, null, null, 'isBoolean') ? _react2.default.createElement('input', { type: 'checkbox', 'data-bind': 'if: isBoolean, check: value',
+            defaultChecked: _viewmodelReact2.default.getValue(this, null, null, 'value'),
+            ref: _viewmodelReact2.default.bindElement(this, null, null, '{check:value}')
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isObject') ? _react2.default.createElement('textarea', { rows: '4', disabled: this.isVmProp(), style: {
               fontSize: '12px',
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
-            }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'objectValue'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:objectValue}'),
-            'data-bind': '{value:objectValue}'
+            }, 'data-bind': 'if: isObject, value: objectValue',
+            defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'objectValue'),
+            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:objectValue}')
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isArray') ? _react2.default.createElement('textarea', { disabled: 'disabled', style: {
               fontSize: '12px',
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
-            }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'arrayValue'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:arrayValue}'),
-            'data-bind': '{value:arrayValue}'
+            }, 'data-bind': 'if: isArray, value: arrayValue',
+            defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'arrayValue'),
+            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:arrayValue}')
           }) : null,
           _viewmodelReact2.default.getValue(this, null, null, 'isFunc && !isVmProp && !showFuncResult') ? _react2.default.createElement(
             'a',
@@ -84,8 +86,8 @@ var Property = exports.Property = function (_React$Component) {
                 fontSize: '12px',
                 cursor: 'pointer'
               },
-              ref: _viewmodelReact2.default.bindElement(this, null, null, '{click:showFuncResult(true)}'),
-              'data-bind': '{click:showFuncResult(true)}'
+              'data-bind': 'if: isFunc && !isVmProp && !showFuncResult, click: showFuncResult(true)',
+              ref: _viewmodelReact2.default.bindElement(this, null, null, '{click:showFuncResult(true)}')
             },
             'evaluate'
           ) : null,
@@ -94,9 +96,9 @@ var Property = exports.Property = function (_React$Component) {
               fontFamily: 'Arial',
               unknown: 'sans-serif',
               borderRadius: '4px'
-            }, defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'value'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}'),
-            'data-bind': '{value:value}'
+            }, 'data-bind': 'if: showFuncResult, value: value',
+            defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'value'),
+            ref: _viewmodelReact2.default.bindElement(this, null, null, '{value:value}')
           }) : null
         )
       );

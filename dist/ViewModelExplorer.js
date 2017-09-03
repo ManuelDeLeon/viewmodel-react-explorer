@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -7,17 +7,17 @@ exports.ViewModelExplorer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DisplayComponent = require('./DisplayComponent/DisplayComponent');
+var _DisplayComponent = require("./DisplayComponent/DisplayComponent");
 
-var _viewmodelReact = require('viewmodel-react');
+var _viewmodelReact = require("viewmodel-react");
 
 var _viewmodelReact2 = _interopRequireDefault(_viewmodelReact);
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _store = require('./store');
+var _store = require("./store");
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -29,120 +29,135 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//var store = new Store('ViewModelExplorer');
+var VmLazyL;
 
-_viewmodelReact2.default.signal({
-  window: {
-    windowSize: {
-      target: typeof window != 'undefined' ? window : global,
-      event: 'resize',
-      transform: function transform(event) {
-        return {
-          height: window.innerHeight,
-          width: window.innerWidth
-        };
+
+var initialWindowSize = {
+  height: 0,
+  width: 10000
+};
+if (typeof window != "undefined") {
+  var first = true;
+  _viewmodelReact2.default.signal({
+    window: {
+      windowSize: {
+        target: window,
+        event: "resize",
+        transform: function transform(event) {
+          if (first) {
+            first = false;
+            return initialWindowSize;
+          }
+          return {
+            height: window.innerHeight,
+            width: window.innerWidth
+          };
+        }
       }
     }
-  }
-});
+  });
+}
 
 var scrollWidth = void 0;
+var firstScroll = true;
 
 var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) {
   _inherits(ViewModelExplorer, _React$Component);
 
   _createClass(ViewModelExplorer, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
       return _react2.default.createElement(
-        'div',
-        {
-          style: {
-            fontFamily: 'Arial',
-            unknown: 'sans-serif',
-            fontSize: '12px',
-            lineHeight: '16px'
-          }
-        },
+        "div",
+        { style: {
+            fontFamily: "Arial",
+            unknown: "sans-serif",
+            fontSize: "12px",
+            lineHeight: "16px"
+          } },
         _react2.default.createElement(
-          'div',
+          "div",
           {
-            style: _viewmodelReact2.default.getStyle(this, null, null, '', 'panelStyle'),
-            ref: _viewmodelReact2.default.bindElement(this, null, null, 'style: panelStyle, hover: hoveringIcon'),
-            'data-bind': 'style: panelStyle, hover: hoveringIcon'
+            "data-bind": "style: panelStyle, hover: hoveringIcon",
+            style: _viewmodelReact2.default.getStyle(this, null, null, "", "panelStyle"),
+            ref: _viewmodelReact2.default.bindElement(this, null, null, "style: panelStyle, hover: hoveringIcon")
           },
           _react2.default.createElement(
-            'div',
+            "div",
             { style: {
-                textAlign: 'left'
+                textAlign: "left"
               } },
-            _react2.default.createElement('img', { src: 'https://viewmodel.blob.core.windows.net/explorer/viewmodel-logo-small.png',
+            _react2.default.createElement("img", {
+              src: "https://viewmodel.blob.core.windows.net/explorer/viewmodel-logo-small.png",
               style: {
-                maxHeight: '15px',
-                marginTop: '3px',
-                marginLeft: '2px',
-                cursor: 'pointer',
-                verticalAlign: 'top'
+                maxHeight: "15px",
+                marginTop: "3px",
+                marginLeft: "2px",
+                cursor: "pointer",
+                verticalAlign: "top"
               },
-              ref: _viewmodelReact2.default.bindElement(this, null, null, 'toggle: show'),
-              'data-bind': 'toggle: show'
+              "data-bind": "toggle: show",
+              ref: _viewmodelReact2.default.bindElement(this, null, null, "toggle: show")
             }),
             _react2.default.createElement(
-              'span',
+              "span",
               { style: {
-                  fontSize: '14px',
-                  marginLeft: '10px',
-                  fontWeight: 'bold',
-                  position: 'relative',
-                  top: ' -4px'
+                  fontSize: "14px",
+                  marginLeft: "10px",
+                  fontWeight: "bold",
+                  position: "relative",
+                  top: " -4px"
                 } },
-              'View Models'
+              "View Models"
             ),
-            _react2.default.createElement('img', { src: 'https://viewmodel.blob.core.windows.net/explorer/add.png',
+            _react2.default.createElement("img", {
+              src: "https://viewmodel.blob.core.windows.net/explorer/add.png",
               style: {
-                marginLeft: '10px',
-                cursor: 'pointer',
-                marginTop: '5px'
+                marginLeft: "10px",
+                cursor: "pointer",
+                marginTop: "5px"
               },
-              title: 'Save current state',
-              ref: _viewmodelReact2.default.bindElement(this, null, null, 'click: saveState'),
-              'data-bind': 'click: saveState'
+              title: "Save current state",
+              "data-bind": "click: saveState",
+              ref: _viewmodelReact2.default.bindElement(this, null, null, "click: saveState")
             }),
             _react2.default.createElement(
-              'select',
+              "select",
               {
-                defaultValue: _viewmodelReact2.default.getValue(this, null, null, 'selectedState'),
-                style: _viewmodelReact2.default.getStyle(this, null, null, 'WebkitAppearance:button;WebkitPaddingEnd:20px;WebkitPaddingStart:2px;WebkitUserSelect:none;borderRadius:4px;boxShadow:0px 1px 3px rgba(0, 0, 0, 0.1);backgroundPosition:right;backgroundRepeat:no-repeat;border:1px solid #AAA;color:#555;fontSize:12px;overflow:hidden;padding:2px 5px;textOverflow:ellipsis;whiteSpace:nowrap;marginLeft:10px;marginTop:4px;verticalAlign:top;:;', 'selectedStateStyle'),
-                ref: _viewmodelReact2.default.bindElement(this, null, null, 'value: selectedState, style: selectedStateStyle, change: loadState'),
-                'data-bind': 'value: selectedState, style: selectedStateStyle, change: loadState'
+                "data-bind": "value: selectedState, style: selectedStateStyle, change: loadState",
+                defaultValue: _viewmodelReact2.default.getValue(this, null, null, "selectedState"),
+                style: _viewmodelReact2.default.getStyle(this, null, null, "WebkitAppearance:button;WebkitPaddingEnd:20px;WebkitPaddingStart:2px;WebkitUserSelect:none;borderRadius:4px;boxShadow:0px 1px 3px rgba(0, 0, 0, 0.1);backgroundPosition:right;backgroundRepeat:no-repeat;border:1px solid #AAA;color:#555;fontSize:12px;overflow:hidden;padding:2px 5px;textOverflow:ellipsis;whiteSpace:nowrap;marginLeft:10px;marginTop:4px;verticalAlign:top;:;", "selectedStateStyle"),
+                ref: _viewmodelReact2.default.bindElement(this, null, null, "value: selectedState, style: selectedStateStyle, change: loadState")
               },
-              _viewmodelReact2.default.getValue(this, null, null, 'savedStates').map(function (repeatObject, repeatIndex) {
+              _viewmodelReact2.default.getValue(this, null, null, "savedStates").map(function (repeatObject, repeatIndex) {
                 return _react2.default.createElement(
-                  'option',
-                  { value: repeatObject.name, key: repeatObject.name,
-                    ref: _viewmodelReact2.default.bindElement(_this2, repeatObject, repeatIndex, 'repeat: savedStates, key: name'),
-                    'data-bind': 'repeat: savedStates, key: name'
+                  "option",
+                  {
+                    value: repeatObject.name,
+                    "data-bind": "repeat: savedStates, key: name",
+                    key: repeatObject.name
                   },
                   repeatObject.name
                 );
               })
             ),
-            _react2.default.createElement('img', { src: 'https://viewmodel.blob.core.windows.net/explorer/remove.png',
+            _react2.default.createElement("img", {
+              src: "https://viewmodel.blob.core.windows.net/explorer/remove.png",
               style: {
-                marginLeft: '10px',
-                cursor: 'pointer',
-                marginTop: '5px'
+                marginLeft: "10px",
+                cursor: "pointer",
+                marginTop: "5px"
               },
-              title: 'Delete selected state',
-              ref: _viewmodelReact2.default.bindElement(this, null, null, 'click: deleteState'),
-              'data-bind': 'click: deleteState'
+              title: "Delete selected state",
+              "data-bind": "click: deleteState",
+              ref: _viewmodelReact2.default.bindElement(this, null, null, "click: deleteState")
             })
           ),
           this.components().map(function (c) {
             return _react2.default.createElement(_DisplayComponent.DisplayComponent, {
-              'data-vm-parent': _this2,
+              "data-vm-parent": _this2,
               key: c.vmId, viewmodel: c });
           })
         )
@@ -155,14 +170,15 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
 
     var _this = _possibleConstructorReturn(this, (ViewModelExplorer.__proto__ || Object.getPrototypeOf(ViewModelExplorer)).call(this, props));
 
-    _viewmodelReact2.default.prepareComponent('ViewModelExplorer', _this, {
-      signal: 'window',
+    _viewmodelReact2.default.prepareComponent("ViewModelExplorer", _this, {
+      signal: "window",
+      windowSize: initialWindowSize,
 
       topMargin: 45,
       bottomMargin: 45,
       show: false,
 
-      panelWidth: 330,
+      panelWidth: 340,
 
       hoveringIcon: false,
 
@@ -171,9 +187,17 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
       created: function created() {
         var _this3 = this;
 
-        _store2.default.forEach(function (key, val) {
-          _this3.savedStates().push({ name: key, components: val });
-        });
+        if (typeof window != "undefined") {
+          setTimeout(function () {
+            _this3.windowSize({
+              height: window.innerHeight,
+              width: window.innerWidth
+            });
+            _store2.default.forEach(function (key, val) {
+              _this3.savedStates().push({ name: key, components: val });
+            });
+          });
+        }
       },
       panelHeight: function panelHeight() {
         return this.windowSize().height - this.topMargin() - this.bottomMargin();
@@ -183,25 +207,29 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
       },
       panelStyle: function panelStyle() {
         return {
-          position: 'fixed',
+          position: "fixed",
           height: this.show() ? this.panelHeight() : 25,
           width: this.panelWidth(),
-          'top': this.topMargin(),
-          'z-index': 99999,
-          'background-color': '#ccc',
-          border: '1px solid #555',
-          'left': this.windowSize().width - (this.show() ? this.panelWidth() : this.collapsedLeft()) - this.scrollbarWidth(),
-          'overflow-x': 'auto',
-          'overflow-y': 'visible',
-          'border-radius': '1em 0 0 1em',
-          'WebkitTransition': 'all 0.5s ease-in-out',
-          'MozTransition': 'all 0.5s ease-in-out',
-          '-ms-transition': 'all 0.5s ease-in-out',
-          'OTransition': 'all 0.5s ease-in-out',
+          top: this.topMargin(),
+          "z-index": 99999,
+          "background-color": "#ccc",
+          border: "1px solid #555",
+          left: this.windowSize().width - (this.show() ? this.panelWidth() : this.collapsedLeft()) - this.scrollbarWidth(),
+          "overflow-x": "auto",
+          "overflow-y": "visible",
+          "border-radius": "1em 0 0 1em",
+          WebkitTransition: "all 0.5s ease-in-out",
+          MozTransition: "all 0.5s ease-in-out",
+          "-ms-transition": "all 0.5s ease-in-out",
+          OTransition: "all 0.5s ease-in-out",
           opacity: this.show() || this.hoveringIcon() ? 1 : 0.4
         };
       },
       scrollbarWidth: function scrollbarWidth() {
+        if (firstScroll) {
+          firstScroll = false;
+          return 0;
+        }
         var body = document.body,
             html = document.documentElement;
         var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
@@ -242,7 +270,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
         if (component.vmComponentName === "ViewModelExplorer") return;
         var data = component.data();
         if (Object.keys(data).length > 0) {
-          allComponents[_viewmodelReact2.default.getComponentPath(component)] = data;
+          allComponents[_viewmodelReact2.default.getPathToRoot(component)] = data;
         }
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
@@ -307,7 +335,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
         if (component.vmComponentName === "ViewModelExplorer") return;
 
         _viewmodelReact2.default.Tracker.afterFlush(function () {
-          var data = components[_viewmodelReact2.default.getComponentPath(component)];
+          var data = components[_viewmodelReact2.default.getPathToRoot(component)];
           if (data) {
             component.load(data);
           }
@@ -378,14 +406,14 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
                 }
               });
 
-              return 'break';
+              return "break";
             }
           };
 
           for (var _iterator4 = this.savedStates()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
             var _ret = _loop();
 
-            if (_ret === 'break') break;
+            if (_ret === "break") break;
           }
         } catch (err) {
           _didIteratorError4 = true;
@@ -405,7 +433,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
       deleteState: function deleteState() {
         var selectedState = this.selectedState();
         if (!selectedState) return;
-        var response = confirm('Do you want to delete state \'' + selectedState + '\'');
+        var response = confirm("Do you want to delete state '" + selectedState + "'");
         if (!response) return;
         _store2.default.remove(selectedState);
         var index = -1;
@@ -443,7 +471,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
       selectedStateStyle: function selectedStateStyle() {
         return {
           width: 130 - this.scrollbarWidth(),
-          backgroundImage: 'url(https://viewmodel.blob.core.windows.net/explorer/dropdown_arrow.png)'
+          backgroundImage: "url(https://viewmodel.blob.core.windows.net/explorer/dropdown_arrow.png)"
         };
       }
     });

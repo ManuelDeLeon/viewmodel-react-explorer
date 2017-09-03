@@ -21,13 +21,13 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var VmLazyL;
 
 var DisplayComponent = exports.DisplayComponent = function (_React$Component) {
   _inherits(DisplayComponent, _React$Component);
@@ -50,15 +50,17 @@ var DisplayComponent = exports.DisplayComponent = function (_React$Component) {
           _react2.default.createElement(
             'span',
             {
+              'data-bind': 'text: name, toggle: showChildren, style: headStyle',
               style: _viewmodelReact2.default.getStyle(this, null, null, '', 'headStyle'),
-              ref: _viewmodelReact2.default.bindElement(this, null, null, 'text: name, toggle: showChildren, style: headStyle'),
-              'data-bind': 'text: name, toggle: showChildren, style: headStyle'
+              ref: _viewmodelReact2.default.bindElement(this, null, null, 'text: name, toggle: showChildren, style: headStyle')
             },
             _viewmodelReact2.default.getValue(this, null, null, 'name')
           ),
           _viewmodelReact2.default.getValue(this, null, null, 'showChildren') ? _react2.default.createElement(
             'div',
-            null,
+            {
+              'data-bind': 'if: showChildren'
+            },
             _react2.default.createElement(
               'table',
               null,
@@ -66,21 +68,21 @@ var DisplayComponent = exports.DisplayComponent = function (_React$Component) {
                 'tbody',
                 null,
                 _viewmodelReact2.default.getValue(this, null, null, 'properties').map(function (repeatObject, repeatIndex) {
-                  return _react2.default.createElement(_Property.Property, _extends(_defineProperty({
-                    'data-vm-parent': _this2
-                  }, 'data-vm-parent', _this2), repeatObject, {
-                    key: repeatObject.name,
+                  return _react2.default.createElement(_Property.Property, _extends({
+                    'data-vm-parent': _this2,
                     'data-bind': 'repeat: properties, key: name'
+                  }, repeatObject, {
+                    key: repeatObject.name
                   }));
                 })
               )
             ),
             _viewmodelReact2.default.getValue(this, null, null, 'children').map(function (repeatObject, repeatIndex) {
-              return _react2.default.createElement(DisplayComponent, _extends(_defineProperty({
-                'data-vm-parent': _this2
-              }, 'data-vm-parent', _this2), repeatObject, {
-                key: repeatObject.vmId,
+              return _react2.default.createElement(DisplayComponent, _extends({
+                'data-vm-parent': _this2,
                 'data-bind': 'repeat: children, key: vmId'
+              }, repeatObject, {
+                key: repeatObject.vmId
               }));
             })
           ) : null

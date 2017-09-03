@@ -3,14 +3,14 @@
 module.exports = function () {
   // Store.js
   var store = {},
-      win = typeof window != 'undefined' ? window : global,
+      win = typeof window != "undefined" ? window : global,
       doc = win.document,
-      localStorageName = 'localStorage',
-      scriptTag = 'script',
+      localStorageName = "localStorage",
+      scriptTag = "script",
       storage;
 
   store.disabled = false;
-  store.version = '1.3.20';
+  store.version = "1.3.20";
   store.set = function (key, value) {};
   store.get = function (key, defaultVal) {};
   store.has = function (key) {
@@ -39,10 +39,26 @@ module.exports = function () {
   };
   store.forEach = function () {};
   store.serialize = function (value) {
-    return JSON.stringify(value);
+    var retVal = "";
+    try {
+      retVal = JSON.stringify(value);
+    } catch (e1) {
+      var testObj = {};
+      for (var prop in value) {
+        testObj[prop] = value[prop];
+        try {
+          JSON.stringify(testObj);
+        } catch (e2) {
+          console.log("Can't serialize data for component: " + prop);
+          console.log(e2);
+          return "";
+        }
+      }
+    }
+    return retVal;
   };
   store.deserialize = function (value) {
-    if (typeof value != 'string') {
+    if (typeof value != "string") {
       return undefined;
     }
     try {
@@ -101,16 +117,16 @@ module.exports = function () {
     // document can be used instead of the current document (which would
     // have been limited to the current path) to perform #userData storage.
     try {
-      storageContainer = new ActiveXObject('htmlfile');
+      storageContainer = new ActiveXObject("htmlfile");
       storageContainer.open();
-      storageContainer.write('<' + scriptTag + '>document.w=window</' + scriptTag + '><iframe src="/favicon.ico"></iframe>');
+      storageContainer.write("<" + scriptTag + ">document.w=window</" + scriptTag + '><iframe src="/favicon.ico"></iframe>');
       storageContainer.close();
       storageOwner = storageContainer.w.frames[0].document;
-      storage = storageOwner.createElement('div');
+      storage = storageOwner.createElement("div");
     } catch (e) {
       // somehow ActiveXObject instantiation failed (perhaps some special
       // security settings or otherwse), fall back to per-path storage
-      storage = doc.createElement('div');
+      storage = doc.createElement("div");
       storageOwner = doc.body;
     }
     var withIEStorage = function withIEStorage(storeFunction) {
@@ -120,7 +136,7 @@ module.exports = function () {
         // See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
         // and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
         storageOwner.appendChild(storage);
-        storage.addBehavior('#default#userData');
+        storage.addBehavior("#default#userData");
         storage.load(localStorageName);
         var result = storeFunction.apply(store, args);
         storageOwner.removeChild(storage);
@@ -133,7 +149,7 @@ module.exports = function () {
     // See https://github.com/marcuswestin/store.js/issues/83
     var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g");
     var ieKeyFix = function ieKeyFix(key) {
-      return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___');
+      return key.replace(/^d/, "___$&").replace(forbiddenCharsRegex, "___");
     };
     store.set = withIEStorage(function (storage, key, val) {
       key = ieKeyFix(key);
@@ -171,7 +187,7 @@ module.exports = function () {
   }
 
   try {
-    var testKey = '__storejs__';
+    var testKey = "__storejs__";
     store.set(testKey, testKey);
     if (store.get(testKey) != testKey) {
       store.disabled = true;

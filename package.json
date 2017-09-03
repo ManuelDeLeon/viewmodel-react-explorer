@@ -1,6 +1,6 @@
 {
   "name": "viewmodel-react-explorer",
-  "version": "1.0.8",
+  "version": "1.0.15",
   "description": "Debuggin tool for viewmodel-react",
   "repository": {
     "type": "git",
@@ -12,12 +12,7 @@
     "url": "https://github.com/ManuelDeLeon/viewmodel-react-explorer/issues"
   },
   "homepage": "https://github.com/ManuelDeLeon/viewmodel-react-explorer",
-  "keywords": [
-    "viewmodel",
-    "viewmodel-explorer",
-    "react-component",
-    "react"
-  ],
+  "keywords": ["viewmodel", "viewmodel-explorer", "react-component", "react"],
   "scripts": {
     "prepublish": "babel src --out-dir ./dist"
   },
@@ -27,12 +22,12 @@
     "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
-    "viewmodel-react-plugin": "^3.0.4"
+    "viewmodel-react-plugin": "^3.1.0"
   },
   "peerDependencies": {
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
-    "viewmodel-react": "^2.3.0"
+    "viewmodel-react": "^2.4.1"
   },
   "dependencies": {}
 }
