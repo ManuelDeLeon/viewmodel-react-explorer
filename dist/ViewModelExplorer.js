@@ -59,7 +59,6 @@ if (typeof window != "undefined") {
 }
 
 var scrollWidth = void 0;
-var firstScroll = true;
 
 var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) {
   _inherits(ViewModelExplorer, _React$Component);
@@ -226,10 +225,7 @@ var ViewModelExplorer = exports.ViewModelExplorer = function (_React$Component) 
         };
       },
       scrollbarWidth: function scrollbarWidth() {
-        if (firstScroll) {
-          firstScroll = false;
-          return 0;
-        }
+        if (typeof document == "undefined") return 0;
         var body = document.body,
             html = document.documentElement;
         var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);

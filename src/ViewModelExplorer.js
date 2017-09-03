@@ -27,7 +27,7 @@ if (typeof window != "undefined") {
 }
 
 let scrollWidth;
-let firstScroll = true;
+
 ViewModelExplorer({
   signal: "window",
   windowSize: initialWindowSize,
@@ -78,10 +78,7 @@ ViewModelExplorer({
     };
   },
   scrollbarWidth() {
-    if (firstScroll) {
-      firstScroll = false;
-      return 0;
-    }
+    if (typeof document == "undefined") return 0;
     var body = document.body,
       html = document.documentElement;
     var height = Math.max(
