@@ -194,7 +194,7 @@ ViewModelExplorer({
     return {
       width: 130 - this.scrollbarWidth(),
       backgroundImage:
-        "url(https://viewmodel.blob.core.windows.net/explorer/dropdown_arrow.png)"
+        "url(https://viewmodel.org/images/explorer/dropdown_arrow.png)"
     };
   },
   render() {
@@ -206,7 +206,7 @@ ViewModelExplorer({
       <div b="style: panelStyle, hover: hoveringIcon">
         <div style="text-align: left">
           <img
-            src="https://viewmodel.blob.core.windows.net/explorer/viewmodel-logo-small.png"
+            src="https://viewmodel.org/images/explorer/viewmodel-logo-small.png"
             style="
              max-height: 15px;
              margin-top: 3px;
@@ -220,7 +220,7 @@ ViewModelExplorer({
             View Models
           </span>
           <img
-            src="https://viewmodel.blob.core.windows.net/explorer/add.png"
+            src="https://viewmodel.org/images/explorer/add.png"
             style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
             title="Save current state"
             b="click: saveState"
@@ -256,7 +256,7 @@ ViewModelExplorer({
             </option>
           </select>
           <img
-            src="https://viewmodel.blob.core.windows.net/explorer/remove.png"
+            src="https://viewmodel.org/images/explorer/remove.png"
             style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
             title="Delete selected state"
             b="click: deleteState"
