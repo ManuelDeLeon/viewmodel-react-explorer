@@ -20,22 +20,19 @@ DisplayComponent({
     }
     return arr;
   },
-  children() {
+  vmChildren() {
     const vm = this.viewmodel();
     if (vm) {
-      const ret = [];
-      for(let v of vm.children()) {
-        if (v.vmComponentName !== 'ViewModelExplorer') {
-          ret.push({ viewmodel: v, vmId: v.vmId });
-        }
-      }
-      return ret;
+      return vm
+        .children()
+        .filter(v => v.vmComponentName !== "ViewModelExplorer")
+        .map(v => ({ viewmodel: v, vmId: v.vmId }));
     } else {
       return [];
     }
   },
   headStyle() {
-    const hasChildren = this.children().length > 0 || this.properties().length > 0;
+    const hasChildren = this.viewmodel().children().length > 0 || this.properties().length > 0;
     return {
       color: this.viewmodel() && this.viewmodel().valid() ? 'darkblue' : 'darkred',
       'font-weight': hasChildren ? 'bold' : 'normal',
@@ -45,14 +42,15 @@ DisplayComponent({
   },
   render(){
     <ul style="list-style-type: none; padding-left: 10px; text-align: left;">
-      <li><span b="text: name, toggle: showChildren, style: headStyle" />
+      <li>
+        <span b="text: name, toggle: showChildren, style: headStyle" />
         <div b="if: showChildren">
           <table>
             <tbody>
-            <Property b="repeat: properties, key: name" />
+              <Property b="repeat: properties, key: name" />
             </tbody>
           </table>
-          <DisplayComponent b="repeat: children, key: vmId"  />
+          <DisplayComponent b="repeat: vmChildren, key: vmId"  />
         </div>
 
       </li>

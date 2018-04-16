@@ -27,19 +27,33 @@ if (typeof window != "undefined") {
 }
 
 let scrollWidth;
+const reloadKey = "vm-reloaded-";
 
 ViewModelExplorer({
   signal: "window",
   windowSize: initialWindowSize,
+  saveLastState() {
+    this.deleteStateAndStore(reloadKey, false);
+    this.saveStateToStore(reloadKey);
+  },
+  loadLastState(){
+    if (store.has(reloadKey)) {
+      this.loadStateFromStore(reloadKey); 
+      this.deleteStateAndStore(reloadKey, false);
+    }
+  },
   created() {
     if (typeof window != "undefined") {
+      const that = this;
       setTimeout(() => {
-        this.windowSize({
+        that.windowSize({
           height: window.innerHeight,
           width: window.innerWidth
         });
         store.forEach((key, val) => {
-          this.savedStates().push({ name: key, components: val });
+          if (key != reloadKey) {
+            that.savedStates().push({ name: key, components: val });
+          }
         });
       });
     }
@@ -123,7 +137,7 @@ ViewModelExplorer({
     return ViewModel.rootComponents.list();
   },
   selectedState: null,
-  savedStates: [],
+  savedStates: [ ],
   addComponentForSave(allComponents, component) {
     if (component.vmComponentName === "ViewModelExplorer") return;
     const data = component.data();
@@ -136,13 +150,16 @@ ViewModelExplorer({
   },
   saveState() {
     const name = prompt("Name of the current state:");
+    this.saveStateToStore(name);
+    this.selectedState(name);
+  },
+  saveStateToStore(name) {
     const allComponents = {};
     for (let component of this.components()) {
       this.addComponentForSave(allComponents, component);
     }
     this.savedStates().push({ name: name, components: allComponents });
     store.set(name, allComponents);
-    this.selectedState(name);
   },
   loadComponentState(components, component) {
     if (component.vmComponentName === "ViewModelExplorer") return;
@@ -159,27 +176,33 @@ ViewModelExplorer({
     });
   },
   loadState() {
-    const selectedState = this.selectedState();
+    let selectedState = this.selectedState();
+    if (!selectedState && this.savedStates().length) {
+      selectedState = this.savedStates()[0].name;
+    }
+    this.loadStateFromStore(selectedState);
+  },
+  loadStateFromStore(selectedState) {
     if (!selectedState) return;
     const that = this;
-    for (let state of this.savedStates()) {
-      if (state.name === selectedState) {
-        ViewModel.Tracker.nonreactive(function() {
-          for (let component of that.components()) {
-            that.loadComponentState(state.components, component);
-          }
-        });
-
-        break;
-      }
-    }
+    const components = store.get(selectedState);
+    if (components) {
+      ViewModel.Tracker.nonreactive(function() {
+        for (let component of that.components()) {
+          that.loadComponentState(components, component);
+        }
+      });
+    };
   },
   deleteState() {
     const selectedState = this.selectedState();
+    this.deleteStateAndStore(selectedState, true);
+  },
+  deleteStateAndStore(selectedState, selectNext) {
     if (!selectedState) return;
-    const response = confirm(`Do you want to delete state '${selectedState}'`);
-    if (!response) return;
-    store.remove(selectedState);
+    if (store.has(selectedState)) {
+      store.remove(selectedState);
+    }
     let index = -1;
     for (let state of this.savedStates()) {
       index++;
@@ -188,11 +211,17 @@ ViewModelExplorer({
         break;
       }
     }
-    this.selectedState(null);
+    if (this.savedStates().length > 0) {
+      if (selectNext) {
+        this.selectedState(this.savedStates()[0].name);
+      }
+    } else {
+      this.selectedState(null);
+    }
   },
   selectedStateStyle() {
     return {
-      width: 130 - this.scrollbarWidth(),
+      width: 200 - this.scrollbarWidth(),
       backgroundImage:
         "url(https://viewmodel.org/images/explorer/dropdown_arrow.png)"
     };
@@ -205,29 +234,15 @@ ViewModelExplorer({
       ">
       <div b="style: panelStyle, hover: hoveringIcon">
         <div style="text-align: left">
-          <img
-            src="https://viewmodel.org/images/explorer/viewmodel-logo-small.png"
-            style="
+          <img src="https://viewmodel.org/images/explorer/viewmodel-logo-small.png" style="
              max-height: 15px;
              margin-top: 3px;
              margin-left: 2px;
              cursor: pointer;
              vertical-align: top;
-             "
-            b="toggle: show"
-          />
-          <span style="font-size: 14px; margin-left: 10px; font-weight: bold; position: relative; top: -4px;">
-            View Models
-          </span>
-          <img
-            src="https://viewmodel.org/images/explorer/add.png"
-            style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
-            title="Save current state"
-            b="click: saveState"
-          />
-          <select
-            b="value: selectedState, style: selectedStateStyle, change: loadState"
-            style="
+             " b="toggle: show" />
+          <img src="https://viewmodel.org/images/explorer/add.png" style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;" title="Save current state" b="click: saveState" />
+          <select b="value: selectedState, style: selectedStateStyle, change: loadState" style="
                    -webkit-appearance: button;
                    -webkit-padding-end: 20px;
                    -webkit-padding-start: 2px;
@@ -246,21 +261,14 @@ ViewModelExplorer({
                    margin-left: 10px;
                    margin-top: 4px;
                    vertical-align: top;
-                "
-          >
-            <option
-              b="repeat: savedStates, key: name"
-              value={repeatObject.name}
-            >
+                   width: 185px;
+                ">
+            <option b="repeat: savedStates, key: name" value={repeatObject.name}>
               {repeatObject.name}
             </option>
           </select>
-          <img
-            src="https://viewmodel.org/images/explorer/remove.png"
-            style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;"
-            title="Delete selected state"
-            b="click: deleteState"
-          />
+          <img src="https://viewmodel.org/images/explorer/reload.png" style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;" title="Reload selected state" b="click: loadState" />
+          <img src="https://viewmodel.org/images/explorer/remove.png" style="margin-left: 10px; cursor: pointer; margin-top: 5px; cursor: pointer;" title="Delete selected state" b="click: deleteState" />
         </div>
 
         {this.components().map(c => (
