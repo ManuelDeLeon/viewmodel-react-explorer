@@ -1,5 +1,20 @@
 import store from "./store";
 
+
+const reloadKey = "vm-reloaded-";
+
+export function saveLastState() {
+         const allComponents = ViewModel.data();
+         store.set(reloadKey, allComponents);
+       }
+
+export function loadLastState() {
+    if (store.has(reloadKey)) {
+      const data = store.get(reloadKey);
+      ViewModel.load(data);
+    }
+}
+
 const initialWindowSize = {
   height: 0,
   width: 10000
@@ -27,21 +42,10 @@ if (typeof window != "undefined") {
 }
 
 let scrollWidth;
-const reloadKey = "vm-reloaded-";
 
 ViewModelExplorer({
   signal: "window",
   windowSize: initialWindowSize,
-  saveLastState() {
-    this.deleteStateAndStore(reloadKey, false);
-    this.saveStateToStore(reloadKey);
-  },
-  loadLastState(){
-    if (store.has(reloadKey)) {
-      this.loadStateFromStore(reloadKey); 
-      this.deleteStateAndStore(reloadKey, false);
-    }
-  },
   created() {
     if (typeof window != "undefined") {
       const that = this;
@@ -138,26 +142,13 @@ ViewModelExplorer({
   },
   selectedState: null,
   savedStates: [ ],
-  addComponentForSave(allComponents, component) {
-    if (component.vmComponentName === "ViewModelExplorer") return;
-    const data = component.data();
-    if (Object.keys(data).length > 0) {
-      allComponents[ViewModel.getPathToRoot(component)] = data;
-    }
-    for (let child of component.children()) {
-      this.addComponentForSave(allComponents, child);
-    }
-  },
   saveState() {
     const name = prompt("Name of the current state:");
     this.saveStateToStore(name);
     this.selectedState(name);
   },
   saveStateToStore(name) {
-    const allComponents = {};
-    for (let component of this.components()) {
-      this.addComponentForSave(allComponents, component);
-    }
+    const allComponents = ViewModel.data();
     this.savedStates().push({ name: name, components: allComponents });
     store.set(name, allComponents);
   },
